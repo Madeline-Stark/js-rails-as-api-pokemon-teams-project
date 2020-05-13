@@ -17,7 +17,12 @@ When a user loads the page, they should see all trainers, with their current tea
     make card for each trainer
 
 Whenever a user hits "Add Pokemon" and they have space on their team, they should get a new Pokemon.
-//can have validation in class to limit number of pokemon to 6 
+//just adds a random pokemon
+//event listener on add pokemon button
+//make a post request to /pokemons - pass trainer id?
+//make pokemon create action that uses faker to make pokemon and associates with trainer
+//validate for team size - limit number of pokemon to 6 
+//display pokemon on team 
 
 Whenever a user hits "Release Pokemon" on a specific Pokemon team, that specific Pokemon should be released from the team.
 You should build out just enough of your Rails API to achieve the above. You should not build out full CRUD on each model. For example, the frontend will not have the ability to create a new Trainer, so your backend should not have a POST /trainers route.

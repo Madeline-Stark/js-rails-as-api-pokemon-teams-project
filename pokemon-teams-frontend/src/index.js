@@ -42,7 +42,8 @@ function makeTrainerCard(trainer){
     addPokeButton.dataset.trainerId = trainer.id //need camel case for hyphen
     addPokeButton.innerText = "Add Pokemon"
     card.appendChild(addPokeButton)
-    // TODO: ATTACH EVENT LISTENER TO BUTTON
+    // ATTACH EVENT LISTENER TO BUTTON
+    addPokeButton.addEventListener('click', addPokemon)
 
     //MAKE LIST
     const pokemonList = document.createElement('ul')
@@ -70,4 +71,14 @@ function renderPokemon(pokemon){
     //would need to call this after adding list to DOM
     //need to target specific trainer's card
     const list = document.querySelector(`div[data-id="${pokemon.trainer_id}"]`)
+}
+
+function addPokemon(event){
+    debugger
+    const trainerId = event.target.dataset.trainerId
+
+    const formData = {
+        trainerId: trainerId
+    }
+
 }
