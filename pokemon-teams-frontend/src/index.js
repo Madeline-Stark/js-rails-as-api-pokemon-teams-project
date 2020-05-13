@@ -47,38 +47,92 @@ function makeTrainerCard(trainer){
 
     //MAKE LIST
     const pokemonList = document.createElement('ul')
-    //iterate through pokemon
-    //MAKE INDIVIDUAL POKEMON LIST ITEMS
-    for (const pokemon of trainer.pokemons) {
-        // //make li for each
-        const pokemonLi = document.createElement("li")
-        pokemonLi.innerText = pokemon.nickname
-        const releaseButton = document.createElement("button")
-        releaseButton.classList += "release"
-        releaseButton.innerText = "Release"
-        releaseButton.dataset.pokemonId = pokemon.id
-        pokemonLi.appendChild(releaseButton)
-        pokemonList.appendChild(pokemonLi)
-        //ONCE ALL DONE REFACTOR INTO OWN FUNCTION
-    } 
+    pokemonList.id = `trainer-${trainer.id}-pokemon`//so can use for render poke
+   
     card.appendChild(pokemonList)
     
     //add card to DOM:
     main.appendChild(card)
+    //moving it here so will have access to list on DOM
+     //iterate through pokemon
+    //MAKE INDIVIDUAL POKEMON LIST ITEMS
+    for (const pokemon of trainer.pokemons) {
+        renderPokemon(pokemon)
+    } 
 }
 
 function renderPokemon(pokemon){
     //would need to call this after adding list to DOM
     //need to target specific trainer's card
-    const list = document.querySelector(`div[data-id="${pokemon.trainer_id}"]`)
+    const list = document.getElementById(`trainer-${pokemon.trainer_id}-pokemon`)
+    //debugger
+    // //make li for each
+    const pokemonLi = document.createElement("li")
+    //add id for release later
+    pokemonLi.id = `pokemon-${pokemon.id}`
+    pokemonLi.innerText = pokemon.nickname
+    const releaseButton = document.createElement("button")
+    releaseButton.classList += "release"
+    releaseButton.innerText = "Release"
+    releaseButton.dataset.pokemonId = pokemon.id
+    releaseButton.addEventListener('click', releasePokemon)
+    pokemonLi.appendChild(releaseButton)
+    list.appendChild(pokemonLi)
 }
 
 function addPokemon(event){
-    debugger
     const trainerId = event.target.dataset.trainerId
 
     const formData = {
         trainerId: trainerId
     }
 
+    const configObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
+    }
+
+    fetch("http://localhost:3000/pokemons", configObj)
+        .then(function(resp){
+            // throws error to catch
+            if (!resp.ok){
+                throw Error(resp.statusText)
+            }
+            return resp.json()
+        })
+        .then(function(object){
+            renderPokemon(object)
+
+        })
+        .catch(function(error){
+            console.log(error)
+        })
+
+}
+
+function releasePokemon(event){
+    const pokemonId = event.target.dataset.pokemonId
+    //make delete request
+    const configObj = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    }
+    fetch(`${POKEMONS_URL}/${pokemonId}`, configObj)
+    .then(function(resp){
+        return resp.json()
+    })
+    .then(function(obj){
+        console.log(obj)
+        //delete from dom
+        const pokemon = document.getElementById(`pokemon-${obj.id}`)
+        pokemon.remove()
+    })
+    
 }

@@ -25,4 +25,11 @@ Whenever a user hits "Add Pokemon" and they have space on their team, they shoul
 //display pokemon on team 
 
 Whenever a user hits "Release Pokemon" on a specific Pokemon team, that specific Pokemon should be released from the team.
+//build destroy action
+//add event listener to release button
+//make delete request
+
+//students often think of code as unchangeable, dont go back and make changes to code
+
+
 You should build out just enough of your Rails API to achieve the above. You should not build out full CRUD on each model. For example, the frontend will not have the ability to create a new Trainer, so your backend should not have a POST /trainers route.
